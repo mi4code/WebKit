@@ -18,9 +18,9 @@ include(WebKitCommon)
 # -----------------------------------------------------------------------------
 # Enable API unit tests and create a target for the test runner
 # -----------------------------------------------------------------------------
-if (ENABLE_API_TESTS)
-    enable_testing()
-endif ()
+#if (ENABLE_API_TESTS)
+#    enable_testing()
+#endif ()
 
 # -----------------------------------------------------------------------------
 # Add module directories
@@ -34,9 +34,9 @@ if (ENABLE_TOOLS)
     add_subdirectory(Tools)
 endif ()
 
-if (DEVELOPER_MODE)
-    add_subdirectory(PerformanceTests)
-endif ()
+#if (DEVELOPER_MODE)
+#    add_subdirectory(PerformanceTests)
+#endif ()
 
 # -----------------------------------------------------------------------------
 # Print the features list last, for maximum visibility.
