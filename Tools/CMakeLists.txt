@@ -24,3 +24,5 @@ endif ()
 if (ENABLE_API_TESTS)
     add_subdirectory(TestWebKitAPI)
 endif ()
+
+add_subdirectory(libHUI)
