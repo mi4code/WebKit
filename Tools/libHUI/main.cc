@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <wtf/Ref.h>
 
+#include "WebKitBrowserWindow.h"
+
 int main() {
     std::cout << "Hello, CMake!" << std::endl;
     return 0;
