@@ -1,8 +1,8 @@
-set(MiniBrowser_PRIVATE_INCLUDE_DIRECTORIES
+set(HUItest_PRIVATE_INCLUDE_DIRECTORIES
     ${CMAKE_BINARY_DIR}
 )
 
-set(MiniBrowser_SOURCES
+set(HUItest_SOURCES
     BrowserWindow.cpp
     Common.cpp
     Common2.cpp
@@ -14,13 +14,13 @@ set(MiniBrowser_SOURCES
     stdafx.cpp
 )
 
-set(MiniBrowser_PRIVATE_DEFINITIONS _UNICODE)
-set(MiniBrowser_PRIVATE_LIBRARIES
+set(HUItest_PRIVATE_DEFINITIONS _UNICODE)
+set(HUItest_PRIVATE_LIBRARIES
     comctl32
     shlwapi
     user32
 )
-set(MiniBrowser_FRAMEWORKS
+set(HUItest_FRAMEWORKS
     JavaScriptCore
     PAL
     WTF
@@ -28,14 +28,14 @@ set(MiniBrowser_FRAMEWORKS
     WebKit
 )
 
-add_library(MiniBrowserInjectedBundle SHARED
+add_library(HUItestInjectedBundle SHARED
     Common2.cpp
     InjectedBundle.cpp
 )
-target_link_libraries(MiniBrowserInjectedBundle WebKit::WebKit)
-target_include_directories(MiniBrowserInjectedBundle PRIVATE ${CMAKE_BINARY_DIR})
+target_link_libraries(HUItestInjectedBundle WebKit::WebKit)
+target_include_directories(HUItestInjectedBundle PRIVATE ${CMAKE_BINARY_DIR})
 
-WEBKIT_EXECUTABLE_DECLARE(hui-test)
-WEBKIT_EXECUTABLE(hui-test)
+WEBKIT_EXECUTABLE_DECLARE(HUItest)
+WEBKIT_EXECUTABLE(HUItest)
 
-set_target_properties(hui-test PROPERTIES WIN32_EXECUTABLE ON)
+set_target_properties(HUItest PROPERTIES WIN32_EXECUTABLE ON)
