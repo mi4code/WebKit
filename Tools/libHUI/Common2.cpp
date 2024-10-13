@@ -23,9 +23,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#pragma once
+#include "stdafx.h"
+#include "Common2.h"
 
-#include <WebKit/WKRetainPtr.h>
-#include <WebKit/WKString.h>
+#include <vector>
 
-std::wstring createString(WKStringRef);
+std::wstring createString(WKStringRef wkString)
+{
+    size_t maxSize = WKStringGetLength(wkString);
+
+    std::vector<WKChar> wkCharBuffer(maxSize);
+    size_t actualLength = WKStringGetCharacters(wkString, wkCharBuffer.data(), maxSize);
+    return std::wstring(wkCharBuffer.data(), actualLength);
+}

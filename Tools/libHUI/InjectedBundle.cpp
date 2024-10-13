@@ -23,9 +23,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#pragma once
+#include "stdafx.h"
 
-#include <WebKit/WKRetainPtr.h>
-#include <WebKit/WKString.h>
+#include "Common2.h"
+#include <WebKit/WKBundle.h>
+#include <WebKit/WKBundleFramePrivate.h>
+#include <WebKit/WKBundlePage.h>
+#include <WebKit/WKBundlePrivate.h>
 
-std::wstring createString(WKStringRef);
+void didReceiveMessageToPage(WKBundleRef, WKBundlePageRef page, WKStringRef messageName, WKTypeRef, const void*)
+{
+    if (WKStringIsEqualToUTF8CString(messageName, "DumpLayerTree")) {
+        auto frame = WKBundlePageGetMainFrame(page);
+        auto text = adoptWK(WKBundleFrameCopyLayerTreeAsText(frame));
+        OutputDebugString(createString(text.get()).c_str());
+    }
+}
+
+extern "C" __declspec(dllexport)
+void WKBundleInitialize(WKBundleRef bundle, WKTypeRef)
+{
+    WKBundleClientV1 client = {
+        { 1, nullptr },
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        didReceiveMessageToPage
+    };
+    WKBundleSetClient(bundle, &client.base);
+}
