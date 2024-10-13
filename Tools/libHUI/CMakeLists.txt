@@ -35,7 +35,7 @@ add_library(MiniBrowserInjectedBundle SHARED
 target_link_libraries(MiniBrowserInjectedBundle WebKit::WebKit)
 target_include_directories(MiniBrowserInjectedBundle PRIVATE ${CMAKE_BINARY_DIR})
 
-WEBKIT_EXECUTABLE_DECLARE(MiniBrowser)
-WEBKIT_EXECUTABLE(MiniBrowser)
+WEBKIT_EXECUTABLE_DECLARE(hui-test)
+WEBKIT_EXECUTABLE(hui-test)
 
-set_target_properties(MiniBrowser PROPERTIES WIN32_EXECUTABLE ON)
+set_target_properties(hui-test PROPERTIES WIN32_EXECUTABLE ON)
