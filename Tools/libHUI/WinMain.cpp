@@ -58,9 +58,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, _
     // Init COM
     OleInitialize(nullptr);
 
-    auto factory = WebKitBrowserWindow::create;
+    ///auto factory = WebKitBrowserWindow::create;
     ///auto& mainWindow = MainWindow::create().leakRef();
     ///HRESULT hr = mainWindow.init(factory, hInst, options.usesLayeredWebView);
+	auto factory = WebKitBrowserWindow::create().leakRef();
     HRESULT hr = factory.init();
     if (FAILED(hr)) goto exit;
 
