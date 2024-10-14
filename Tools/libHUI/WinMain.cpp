@@ -61,7 +61,11 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, _
     ///auto factory = WebKitBrowserWindow::create;
     ///auto& mainWindow = MainWindow::create().leakRef();
     ///HRESULT hr = mainWindow.init(factory, hInst, options.usesLayeredWebView);
-	auto factory = WebKitBrowserWindow::create().leakRef();
+	auto factory = WebKitBrowserWindow::create(
+		new BrowserWindowClient(),
+		CreateWindow(s_windowClass.c_str(), title.c_str(), WS_OVERLAPPEDWINDOW,CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, 0, 0, hInstance, NULL),
+		false
+	).leakRef();
     HRESULT hr = factory.init();
     if (FAILED(hr)) goto exit;
 

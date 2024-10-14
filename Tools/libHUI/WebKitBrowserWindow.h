@@ -35,7 +35,7 @@ class WebKitBrowserWindow : public BrowserWindow {
 public:
     static Ref<BrowserWindow> create(BrowserWindowClient&, HWND mainWnd, bool useLayeredWebView = false);
 
-private:
+//private:
     WebKitBrowserWindow(BrowserWindowClient&, WKPageConfigurationRef, HWND mainWnd);
 
     HRESULT init() override;
