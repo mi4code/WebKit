@@ -29,7 +29,7 @@ set(HUItest_FRAMEWORKS
 )
 
 add_library(HUItestInjectedBundle SHARED
-    Common2.cpp
+#    Common2.cpp
     InjectedBundle.cpp
 )
 target_link_libraries(HUItestInjectedBundle WebKit::WebKit)
