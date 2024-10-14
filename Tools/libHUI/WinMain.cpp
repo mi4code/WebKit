@@ -59,20 +59,24 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, _
     OleInitialize(nullptr);
 
     auto factory = WebKitBrowserWindow::create;
-    auto& mainWindow = MainWindow::create().leakRef();
-    HRESULT hr = mainWindow.init(factory, hInst, options.usesLayeredWebView);
-    if (FAILED(hr))
-        goto exit;
+    ///auto& mainWindow = MainWindow::create().leakRef();
+    ///HRESULT hr = mainWindow.init(factory, hInst, options.usesLayeredWebView);
+    HRESULT hr = factory.init();
+    if (FAILED(hr)) goto exit;
 
-    ShowWindow(mainWindow.hwnd(), nCmdShow);
+    ///ShowWindow(mainWindow.hwnd(), nCmdShow);
+    ShowWindow(factory.hwnd(), nCmdShow);
 
     hAccelTable = LoadAccelerators(hInst, MAKEINTRESOURCE(IDC_MINIBROWSER));
     hPreAccelTable = LoadAccelerators(hInst, MAKEINTRESOURCE(IDR_ACCELERATORS_PRE));
 
-    if (options.requestedURL.length())
-        mainWindow.loadURL(options.requestedURL.GetBSTR());
+    /*if (options.requestedURL.length())
+        //mainWindow.loadURL(options.requestedURL.GetBSTR());
+        factory.loadURL(options.requestedURL.GetBSTR());
     else
-        mainWindow.goHome();
+        //mainWindow.goHome();
+        factory.goHome();*/
+	factory.loadURL(L"https://www.webkit.org/");
 
 #pragma warning(disable:4509)
 
