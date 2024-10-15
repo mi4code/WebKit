@@ -1,5 +1,6 @@
 set(RMiniBrowser_PRIVATE_INCLUDE_DIRECTORIES
     ${CMAKE_BINARY_DIR}
+	D:/a/build-webkit-win/build-webkit-win/WebKit/Source/WebKit/UIProcess/API/C
 )
 
 # Essential sources for the simplified MiniBrowser
