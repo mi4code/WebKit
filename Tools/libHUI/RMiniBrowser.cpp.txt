@@ -1,11 +1,12 @@
 #include <windows.h>
-#include <WebKit/WKContext.h>
+//#include <WebKit/WebKit.h>
 #include <WebKit/WKPage.h>
-#include <WebKit/WKView.h>
+#include <WebKit/WKRetainPtr.h>
 #include <WebKit/WKString.h>
-#include <WebKit/WKURL.h>
+#include <WebKit/WKContext.h>
+#include <WebKit/WKView.h>
 
-#pragma comment(lib, "WebKit2.lib")
+#pragma comment(lib, "WebKit.lib")
 
 static WKPageRef g_page;
 
@@ -19,7 +20,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         int width = rect.right - rect.left;
         int height = rect.bottom - rect.top;
         if (g_page) {
-            WKViewSetSize((WKViewRef)GetWindowLongPtr(hwnd, GWLP_USERDATA), width, height);
+            WKViewSetSize(g_page, width, height);
         }
         break;
     }
