@@ -18,11 +18,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         GetClientRect(hwnd, &rect);
         int width = rect.right - rect.left;
         int height = rect.bottom - rect.top;
-
-        // Resize the WebKit view using the Win32 MoveWindow function
         if (g_page) {
-            HWND viewHwnd = reinterpret_cast<HWND>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-            MoveWindow(viewHwnd, 0, 0, width, height, TRUE);
+            WKViewSetSize((WKViewRef)GetWindowLongPtr(hwnd, GWLP_USERDATA), width, height);
         }
         break;
     }
@@ -38,23 +35,22 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 HWND createMainWindow(HINSTANCE hInstance)
 {
     const wchar_t* className = L"SimpleMiniBrowser";
-
+    
     WNDCLASS wc = {};
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = className;
-
+    
     RegisterClass(&wc);
-
+    
     return CreateWindowEx(0, className, L"WebKit MiniBrowser", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768, nullptr, nullptr, hInstance, nullptr);
 }
 
 void loadURL(WKPageRef page, const char* url)
 {
-    WKURLRef wkURL = WKURLCreateWithUTF8CString(url);
-    WKPageLoadURL(page, wkURL);
-    WKRelease(wkURL); // Release after use
+    WKRetainPtr<WKURLRef> wkURL(AdoptWK, WKURLCreateWithUTF8CString(url));
+    WKPageLoadURL(page, wkURL.get());
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
@@ -65,41 +61,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
         return 0;
 
     // Step 2: Initialize WebKit context and view
-    WKContextRef context = WKContextCreate();
-    WKPageConfigurationRef config = WKPageConfigurationCreate();
+    WKRetainPtr<WKContextRef> context(AdoptWK, WKContextCreate());
+    WKRetainPtr<WKPageConfigurationRef> config(AdoptWK, WKPageConfigurationCreate());
     
-    WKPageConfigurationSetContext(config, context);
+    WKPageConfigurationSetContext(config.get(), context.get());
     
-    // Create the WKView (WebKit View)
-    WKViewRef webView = WKViewCreate(config);
-
-    // Step 3: Attach the WKView to the window and set the WebKit page
+    WKRetainPtr<WKViewRef> webView(AdoptWK, WKViewCreate(config.get()));
+    
     RECT rect;
     GetClientRect(hwnd, &rect);
     int width = rect.right - rect.left;
     int height = rect.bottom - rect.top;
-
-    // Set the WebView's HWND to handle resizing
-    HWND viewHwnd = reinterpret_cast<HWND>(webView);
-    SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(viewHwnd));
-    MoveWindow(viewHwnd, 0, 0, width, height, TRUE);
-
-    g_page = WKViewGetPage(webView);
-
-    // Step 4: Load a default URL
+    
+    WKViewSetSize(webView.get(), width, height);
+    SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(webView.get()));
+    
+    // Step 3: Create a WebKit page and load a default URL
+    g_page = WKViewGetPage(webView.get());
     loadURL(g_page, "https://www.example.com");
 
-    // Step 5: Message loop
+    // Step 4: Message loop
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-
-    // Clean up WebKit objects
-    WKRelease(config);
-    WKRelease(context);
-    WKRelease(webView);
 
     return 0;
 }
