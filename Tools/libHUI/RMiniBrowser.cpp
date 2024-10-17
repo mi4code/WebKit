@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <WebKit/WKBase.h>
 #include <WebKit/WKContext.h>
 #include <WebKit/WKPage.h>
 #include <WebKit/WKView.h>
