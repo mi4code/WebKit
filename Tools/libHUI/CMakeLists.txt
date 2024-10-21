@@ -1,34 +1,41 @@
-set(RMiniBrowser_PRIVATE_INCLUDE_DIRECTORIES
+set(MiniBrowser_PRIVATE_INCLUDE_DIRECTORIES
     ${CMAKE_BINARY_DIR}
-	# D:/a/build-webkit-win/build-webkit-win/WebKit/Source/WebKit/UIProcess/API/C
 )
 
-# Essential sources for the simplified MiniBrowser
-set(RMiniBrowser_SOURCES
-    RMiniBrowser.cpp          # The new simplified single C++ source file that integrates WebKit
+set(MiniBrowser_SOURCES
+    BrowserWindow.cpp
+    Common.cpp
+    Common2.cpp
+    MainWindow.cpp
+#    MiniBrowser.exe.manifest
+    MiniBrowserLib.rc
+    WebKitBrowserWindow.cpp
+    WinMain.cpp
+#    stdafx.cpp
 )
 
-# Keep essential definitions
-set(RMiniBrowser_PRIVATE_DEFINITIONS _UNICODE)
-
-# Only required libraries for window handling and WebKit
-set(RMiniBrowser_PRIVATE_LIBRARIES
+set(MiniBrowser_PRIVATE_DEFINITIONS _UNICODE)
+set(MiniBrowser_PRIVATE_LIBRARIES
     comctl32
     shlwapi
     user32
 )
-
-# WebKit frameworks required for rendering pages
-set(RMiniBrowser_FRAMEWORKS
+set(MiniBrowser_FRAMEWORKS
     JavaScriptCore
+    PAL
     WTF
     WebCore
     WebKit
 )
 
-# Generate the executable for the simplified browser
-WEBKIT_EXECUTABLE_DECLARE(RMiniBrowser)
-WEBKIT_EXECUTABLE(RMiniBrowser)
+add_library(MiniBrowserInjectedBundle SHARED
+    Common2.cpp
+    InjectedBundle.cpp
+)
+target_link_libraries(MiniBrowserInjectedBundle WebKit::WebKit)
+target_include_directories(MiniBrowserInjectedBundle PRIVATE ${CMAKE_BINARY_DIR})
 
-# Ensure the output is a Windows executable
-set_target_properties(RMiniBrowser PROPERTIES WIN32_EXECUTABLE ON)
+WEBKIT_EXECUTABLE_DECLARE(MiniBrowser)
+WEBKIT_EXECUTABLE(MiniBrowser)
+
+set_target_properties(MiniBrowser PROPERTIES WIN32_EXECUTABLE ON)
