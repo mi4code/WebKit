@@ -1,8 +1,8 @@
-set(MiniBrowser_PRIVATE_INCLUDE_DIRECTORIES
+set(HMiniBrowser_PRIVATE_INCLUDE_DIRECTORIES
     ${CMAKE_BINARY_DIR}
 )
 
-set(MiniBrowser_SOURCES
+set(HMiniBrowser_SOURCES
     BrowserWindow.cpp
     Common.cpp
     Common2.cpp
@@ -14,13 +14,13 @@ set(MiniBrowser_SOURCES
 #    stdafx.cpp
 )
 
-set(MiniBrowser_PRIVATE_DEFINITIONS _UNICODE)
-set(MiniBrowser_PRIVATE_LIBRARIES
+set(HMiniBrowser_PRIVATE_DEFINITIONS _UNICODE)
+set(HMiniBrowser_PRIVATE_LIBRARIES
     comctl32
     shlwapi
     user32
 )
-set(MiniBrowser_FRAMEWORKS
+set(HMiniBrowser_FRAMEWORKS
     JavaScriptCore
     PAL
     WTF
@@ -28,14 +28,14 @@ set(MiniBrowser_FRAMEWORKS
     WebKit
 )
 
-add_library(MiniBrowserInjectedBundle SHARED
+add_library(HMiniBrowserInjectedBundle SHARED
     Common2.cpp
     InjectedBundle.cpp
 )
-target_link_libraries(MiniBrowserInjectedBundle WebKit::WebKit)
-target_include_directories(MiniBrowserInjectedBundle PRIVATE ${CMAKE_BINARY_DIR})
+target_link_libraries(HMiniBrowserInjectedBundle WebKit::WebKit)
+target_include_directories(HMiniBrowserInjectedBundle PRIVATE ${CMAKE_BINARY_DIR})
 
-WEBKIT_EXECUTABLE_DECLARE(MiniBrowser)
-WEBKIT_EXECUTABLE(MiniBrowser)
+WEBKIT_EXECUTABLE_DECLARE(HMiniBrowser)
+WEBKIT_EXECUTABLE(HMiniBrowser)
 
-set_target_properties(MiniBrowser PROPERTIES WIN32_EXECUTABLE ON)
+set_target_properties(HMiniBrowser PROPERTIES WIN32_EXECUTABLE ON)
